@@ -82,12 +82,84 @@ public class PlayManager {
             }
             return 0;
         }
-        if(touche == 'D')
-        { 
+        if(touche == 'D') // DROITE
+        {
+            for(int row = 0; row < tabJeu.length; row++) 
+            {
+                for(int col = tabJeu.length - 2; col >= 0; col--) 
+                {
+                    if(tabJeu[row][col] != 0) 
+                    {
+                        int currentCol = col;
+                        while(currentCol < tabJeu.length - 1 && tabJeu[row][currentCol + 1] == 0) 
+                        {
+                            // Vérifier si la case suivante contient la même valeur
+                            if(currentCol < tabJeu.length - 1 && tabJeu[row][currentCol + 1] == tabJeu[row][currentCol]) {
+                                tabJeu[row][currentCol + 1] = suite(tabJeu[row][currentCol + 1], tabJeu[row][currentCol]);
+                                tabJeu[row][currentCol] = 0;
+                                break;
+                            }
+                            tabJeu[row][currentCol + 1] = tabJeu[row][currentCol];
+                            tabJeu[row][currentCol] = 0;
+                            currentCol++;
+                        }
+                    }
+                }
+            }
             return 1;
         }
-        if(touche == 'S') return 2;
-        if(touche == 'Q') return 3;
+        if(touche == 'S') // BAS
+        {
+            for(int col = 0; col < tabJeu.length; col++) 
+            {
+                for(int row = tabJeu.length - 2; row >= 0; row--) 
+                {
+                    if(tabJeu[row][col] != 0) 
+                    {
+                        int currentRow = row;
+                        while(currentRow < tabJeu.length - 1 && tabJeu[currentRow + 1][col] == 0) 
+                        {
+                            // Vérifier si la case suivante contient la même valeur
+                            if(currentRow < tabJeu.length - 1 && tabJeu[currentRow + 1][col] == tabJeu[currentRow][col]) {
+                                tabJeu[currentRow + 1][col] = suite(tabJeu[currentRow + 1][col], tabJeu[currentRow][col]);
+                                tabJeu[currentRow][col] = 0;
+                                break;
+                            }
+                            tabJeu[currentRow + 1][col] = tabJeu[currentRow][col];
+                            tabJeu[currentRow][col] = 0;
+                            currentRow++;
+                        }
+                    }
+                }
+            }
+            return 2;
+        }
+        if(touche == 'Q') // GAUCHE
+        {
+            for(int row = 0; row < tabJeu.length; row++) 
+            {
+                for(int col = 1; col < tabJeu.length; col++) 
+                {
+                    if(tabJeu[row][col] != 0) 
+                    {
+                        int currentCol = col;
+                        while(currentCol > 0 && tabJeu[row][currentCol - 1] == 0) 
+                        {
+                            // Vérifier si la case suivante contient la même valeur
+                            if(currentCol > 0 && tabJeu[row][currentCol - 1] == tabJeu[row][currentCol]) {
+                                tabJeu[row][currentCol - 1] = suite(tabJeu[row][currentCol - 1], tabJeu[row][currentCol]);
+                                tabJeu[row][currentCol] = 0;
+                                break;
+                            }
+                            tabJeu[row][currentCol - 1] = tabJeu[row][currentCol];
+                            tabJeu[row][currentCol] = 0;
+                            currentCol--;
+                        }
+                    }
+                }
+            }
+            return 3;
+        }
         
         return 9;
     }
