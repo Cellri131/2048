@@ -3,12 +3,8 @@ package controleur;
 import metier.*;
 
 public class Main2048 {
-    
-    int[][] tabJeu;
 
-    public Main2048(int taille) {
-
-        this.tabJeu = new int[taille][taille];
-        PlayManager playManager = new PlayManager();
+    public static void main(String[] args) {
+        PlayManager playManager = new PlayManager(4);
     }
 }
