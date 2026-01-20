@@ -23,8 +23,10 @@ public class PlayManager {
         GamePanel gamePanel = new GamePanel(tabJeu);
         
         // Affichage initial du plateau
+        clearScreen();
         System.out.println("=== Jeu 2048 - Utilisez ZQSD pour jouer ===");
         System.out.println(gamePanel.toString());
+        System.out.println("Score: " + this.score);
 
         maxNbReach = 0;
         // Boucle principale du jeu
@@ -39,10 +41,11 @@ public class PlayManager {
                 
                 // Si une touche valide a été pressée
                 if(direction != 9) {
-                    System.out.println("\n=== Déplacement: " + getDirectionName(direction) + " ===");
-                    // Réaffichage du plateau après le déplacement
+                    clearScreen();
+                    System.out.println("=== Jeu 2048 - Utilisez ZQSD pour jouer ===");
+                    System.out.println("Déplacement: " + getDirectionName(direction));
                     System.out.println(gamePanel.toString());
-                    System.out.println("Score: " + this.score);
+                    System.out.println("Score: " + this.score + " | Plus grand nombre: " + maxNbReach);
                 }
             }
             
@@ -52,6 +55,12 @@ public class PlayManager {
             }
         }
         scanner.close();
+    }
+    
+    private void clearScreen() {
+        // Utilise les codes ANSI pour effacer l'écran (fonctionne sur Windows 10+, Linux, Mac)
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
     
     private String getDirectionName(int direction) {
