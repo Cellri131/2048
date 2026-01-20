@@ -13,8 +13,8 @@ public class PlayManager {
     public PlayManager(int taille) {
         tabJeu = new int[taille][taille];
         // Initialisation avec quelques valeurs pour tester
-        tabJeu[0][0] = 4;
-        tabJeu[1][1] = 4;
+        /*tabJeu[0][0] = 4;
+        tabJeu[1][1] = 4;*/
         
         scanner = new Scanner(System.in);
         
@@ -86,7 +86,7 @@ public class PlayManager {
                 {
                     if(tabJeu[row][col] != 0 && tabJeu[row][col] == tabJeu[row + 1][col]) 
                     {
-                        tabJeu[row][col] = tabJeu[row][col] * 2;
+                        tabJeu[row][col] = suite(tabJeu[row][col], tabJeu[row + 1][col]);
                         tabJeu[row + 1][col] = 0;
                         
                         // Redéplacer les tuiles après fusion
@@ -125,7 +125,7 @@ public class PlayManager {
                 {
                     if(tabJeu[row][col] != 0 && tabJeu[row][col] == tabJeu[row][col - 1]) 
                     {
-                        tabJeu[row][col] = tabJeu[row][col] * 2;
+                        tabJeu[row][col] = suite(tabJeu[row][col], tabJeu[row][col - 1]);
                         tabJeu[row][col - 1] = 0;
                         
                         // Redéplacer les tuiles après fusion
@@ -164,7 +164,7 @@ public class PlayManager {
                 {
                     if(tabJeu[row][col] != 0 && tabJeu[row][col] == tabJeu[row - 1][col]) 
                     {
-                        tabJeu[row][col] = tabJeu[row][col] * 2;
+                        tabJeu[row][col] = suite(tabJeu[row][col], tabJeu[row - 1][col]);
                         tabJeu[row - 1][col] = 0;
                         
                         // Redéplacer les tuiles après fusion
@@ -203,7 +203,7 @@ public class PlayManager {
                 {
                     if(tabJeu[row][col] != 0 && tabJeu[row][col] == tabJeu[row][col + 1]) 
                     {
-                        tabJeu[row][col] = tabJeu[row][col] * 2;
+                        tabJeu[row][col] = suite(tabJeu[row][col], tabJeu[row][col + 1]);
                         tabJeu[row][col + 1] = 0;
                         
                         // Redéplacer les tuiles après fusion
@@ -229,5 +229,6 @@ public class PlayManager {
 
     public void score(int val, int mult){
         this.score += val * (mult/2);
+        System.out.println(score);
     }
 }
