@@ -42,10 +42,14 @@ public class PlayManager {
                     System.out.println("\n=== Déplacement: " + getDirectionName(direction) + " ===");
                     // Réaffichage du plateau après le déplacement
                     System.out.println(gamePanel.toString());
-                    System.out.print(this.score);
+                    System.out.println("Score: " + this.score);
                 }
             }
-            newVal();
+            
+            if(!gameOver) {
+                newVal();
+                end();
+            }
         }
         scanner.close();
     }
@@ -60,9 +64,48 @@ public class PlayManager {
         }
     }
 
-    private void newVal(){
-        int nbRandomMax;
-        int nbMaxLuck;
+    private void end(){
+        // Vérifie si le tableau est plein
+        boolean plateauPlein = true;
+        for(int i = 0; i < tabJeu.length && plateauPlein; i++) {
+            for(int j = 0; j < tabJeu.length && plateauPlein; j++) {
+                if(tabJeu[i][j] == 0) {
+                    plateauPlein = false;
+                }
+            }
+        }
+
+        // Si le plateau est plein, vérifie s'il reste des mouvements possibles
+        if(plateauPlein) {
+            boolean mouvementPossible = false;
+            
+            // Vérifie les fusions possibles horizontalement et verticalement
+            for(int i = 0; i < tabJeu.length && !mouvementPossible; i++) {
+                for(int j = 0; j < tabJeu.length && !mouvementPossible; j++) {
+                    // Vérifie fusion possible à droite
+                    if(j < tabJeu.length - 1 && tabJeu[i][j] == tabJeu[i][j + 1]) {
+                        mouvementPossible = true;
+                    }
+                    // Vérifie fusion possible en bas
+                    if(i < tabJeu.length - 1 && tabJeu[i][j] == tabJeu[i + 1][j]) {
+                        mouvementPossible = true;
+                    }
+                }
+            }
+            
+            // Si aucun mouvement n'est possible, game over
+            if(!mouvementPossible) {
+                gameOver = true;
+                System.out.println("\n=== GAME OVER ===");
+                System.out.println("Score final : " + score);
+                System.out.println("Plus grand nombre atteint : " + maxNbReach);
+            }
+        }
+    }
+
+    private void newVal(){//nom de merde à changer
+        int nbRandomMax; //nom de merde à changer
+        int nbMaxLuck;//nom de merde à changer
 
         // Détermine la valeur maximale aléatoire à générer selon le plus grand nombre atteint
         if (maxNbReach < 8) {
@@ -81,7 +124,35 @@ public class PlayManager {
             nbMaxLuck = (Math.random() < 0.5) ? 2 : 4;
         }
         
-        System.out.println("m"+nbMaxLuck);
+        // System.out.println("m"+nbMaxLuck);
+
+        //placement random des deux valeurs
+        // Trouver toutes les positions libres
+        
+        // Création d'un tableau 2D pour stocker toutes les positions vides possibles
+        // - Première dimension : tabJeu.length * tabJeu.length = nombre maximum de cases (ex: 4*4 = 16 cases maximum)
+        // - Deuxième dimension : [2] = chaque position contient 2 informations [ligne, colonne]
+        // Exemple : positionsLibres[0] = [1, 3] signifie que la case en ligne 1, colonne 3 est vide
+        int[][] positionsLibres = new int[tabJeu.length * tabJeu.length][2];
+        int nbPositionsLibres = 0;
+
+        for(int i = 0; i < tabJeu.length; i++) {
+            for(int j = 0; j < tabJeu.length; j++) {
+                if(tabJeu[i][j] == 0) {
+                    positionsLibres[nbPositionsLibres][0] = i;
+                    positionsLibres[nbPositionsLibres][1] = j;
+                    nbPositionsLibres++;
+                }
+            }
+        }
+
+        // Placer nbMaxLuck si des positions libres existent
+        if(nbPositionsLibres > 0) {
+            int indexAleatoire = (int)(Math.random() * nbPositionsLibres);
+            int row = positionsLibres[indexAleatoire][0];
+            int col = positionsLibres[indexAleatoire][1];
+            tabJeu[row][col] = nbMaxLuck;
+        }
 
         
     }
@@ -251,14 +322,15 @@ public class PlayManager {
         int res = val1 + val2;
         score(res, val1);
 
-        if (res > maxNbReach) maxNbReach = res;
-        System.out.println("nouveau nombre atteint ! : " + maxNbReach);
+        if (res > maxNbReach) {
+            maxNbReach = res;
+            System.out.println("Nouveau nombre atteint : " + maxNbReach);
+        }
         
         return res;
     }
 
     public void score(int val, int mult){
         this.score += val * (mult/2);
-        System.out.println(score);
     }
 }
