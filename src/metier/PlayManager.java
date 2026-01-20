@@ -14,8 +14,8 @@ public class PlayManager {
     public PlayManager(int taille) {
         tabJeu = new int[taille][taille];
         // Initialisation avec quelques valeurs pour tester
-        tabJeu[0][0] = 8;
-        tabJeu[1][1] = 8;
+        tabJeu[0][0] = 1;
+        tabJeu[1][1] = 1;
         
         scanner = new Scanner(System.in);
         
