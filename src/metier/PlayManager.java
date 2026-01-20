@@ -6,6 +6,7 @@ import vue.GamePanel;
 public class PlayManager {
 
     int[][] tabJeu;
+    int maxNbReach;
     boolean gameOver = false;
     static int score = 0;
     Scanner scanner;
@@ -13,8 +14,8 @@ public class PlayManager {
     public PlayManager(int taille) {
         tabJeu = new int[taille][taille];
         // Initialisation avec quelques valeurs pour tester
-        /*tabJeu[0][0] = 4;
-        tabJeu[1][1] = 4;*/
+        tabJeu[0][0] = 8;
+        tabJeu[1][1] = 8;
         
         scanner = new Scanner(System.in);
         
@@ -24,7 +25,8 @@ public class PlayManager {
         // Affichage initial du plateau
         System.out.println("=== Jeu 2048 - Utilisez ZQSD pour jouer ===");
         System.out.println(gamePanel.toString());
-        
+
+        maxNbReach = 0;
         // Boucle principale du jeu
         while(!gameOver) {
             System.out.print("\nEntrez une direction (Z=haut, Q=gauche, S=bas, D=droite) : ");
@@ -58,7 +60,31 @@ public class PlayManager {
         }
     }
 
-    private void newVal(){}
+    private void newVal(){
+        int nbRandomMax;
+        int nbMaxLuck;
+
+        // Détermine la valeur maximale aléatoire à générer selon le plus grand nombre atteint
+        if (maxNbReach < 8) {
+            nbRandomMax = 4;
+        } else {
+            nbRandomMax = maxNbReach / 4;
+        }
+        // System.out.println("M :" + nbRandomMax);
+
+        // System.out.println("p"+maxNbReach);
+        // Génère soit la valeur maxNbReach avec une probabilité de 1/maxNbReach, soit une valeur aléatoire entre 1 et nbRandomMax
+        nbMaxLuck = (Math.random() < 1.0 / maxNbReach) ? maxNbReach : (int)(Math.random() * nbRandomMax) + 1;
+
+        // Si ce n'est pas la valeur maxNbReach, on a une chance sur deux d'avoir un 2 ou un 4
+        if (nbMaxLuck != maxNbReach) {
+            nbMaxLuck = (Math.random() < 0.5) ? 2 : 4;
+        }
+        
+        System.out.println("m"+nbMaxLuck);
+
+        
+    }
 
     public int deplacement(char touche){
         //retourne un int en fonction de la direction du déplacement
@@ -224,6 +250,10 @@ public class PlayManager {
     public int suite(int val1, int val2){
         int res = val1 + val2;
         score(res, val1);
+
+        if (res > maxNbReach) maxNbReach = res;
+        System.out.println("nouveau nombre atteint ! : " + maxNbReach);
+        
         return res;
     }
 
